@@ -50,10 +50,10 @@
             transition: transform 0.1s;
         }
         #yesBtn { background-color: #ff8fab; color: white; position: relative; z-index: 100; }
-        #noBtn { 
-            background-color: #fb6f92; 
-            color: white; 
-            position: fixed; /* Fixed works better for screen-wide jumping */
+        #noBtn {
+            background-color: #fb6f92;
+            color: white;
+            position: fixed;
             transition: 0.2s ease;
         }
         .confetti {
@@ -73,7 +73,7 @@
     <div class="container" id="mainContainer">
         <img id="displayImg" src="https://images.unsplash.com/photo-1518562180175-34a163b1a9a6?auto=format&fit=crop&q=80&w=400" alt="Hearts">
         <h1 id="question">Will you be my Valentine? ❤️</h1>
-        
+
         <div class="btn-group">
             <button id="yesBtn" onclick="celebrate()">Yes!</button>
             <button id="noBtn" onmouseover="moveButton()" onclick="moveButton()">No</button>
@@ -83,7 +83,7 @@
     <script>
         let yesScale = 1;
 
-        // Give the No button an initial position so it can move
+        // Set initial position for the No button
         window.onload = () => {
             const noBtn = document.getElementById('noBtn');
             noBtn.style.left = 'calc(50% + 60px)';
@@ -93,12 +93,11 @@
         function moveButton() {
             const noBtn = document.getElementById('noBtn');
             const yesBtn = document.getElementById('yesBtn');
-            
-            // Generate random positions within the visible window
             const padding = 50;
+
             const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - padding);
             const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - padding);
-            
+
             noBtn.style.left = x + 'px';
             noBtn.style.top = y + 'px';
 
@@ -107,20 +106,21 @@
         }
 
         function celebrate() {
-            // FIXED: Added quotes around the hex color
             document.body.style.backgroundColor = "#ffb7c5";
             const container = document.getElementById('mainContainer');
             const noBtn = document.getElementById('noBtn');
-            
-            // Hide the No button for good
-            noBtn.style.display = 'none';
-            
+
+            if (noBtn) noBtn.style.display = 'none';
+
             container.innerHTML = `
-                <img src="https://images.unsplash.com/photo-1516589174184-c685265142ec?auto=format&fit=crop&q=80&w=400" alt="Love">
-                <h1>Yay! See you on the 14th! 🥰</h1>
+                <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Heart%20with%20Arrow.png" alt="Love" style="width:200px;">
+                <h1 style="color: #fb6f92; font-size: 2rem; margin-bottom: 15px;">Yayayyayy🥳🥳 Can't wait to meet you idiott🥰</h1>
+                <p style="color: #ff4d6d; font-weight: bold; font-size: 0.8rem; margin-bottom: 10px;">
+                    (P.S. I know my frontend skills aren't exactly 'production-grade' as compared to yours, but I hope the logic and intent holds up🤗)<br> 
+                </p>
             `;
 
-            for(let i=0; i<30; i++) {
+            for(let i=0; i<35; i++) {
                 setTimeout(createHeart, i * 100);
             }
         }
@@ -130,7 +130,7 @@
             heart.classList.add('confetti');
             heart.innerText = '❤️';
             heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.animationDuration = Math.random() * 2 + 3 + 's';
+            heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
             document.body.appendChild(heart);
         }
     </script>
