@@ -15,7 +15,7 @@
             background-color: #ffe5ec;
             font-family: 'Arial', sans-serif;
             text-align: center;
-            transition: background 0.5s;
+            transition: background 1s ease;
             overflow: hidden;
         }
         .container {
@@ -23,7 +23,7 @@
             padding: 40px;
             border-radius: 30px;
             box-shadow: 0 15px 35px rgba(251, 111, 146, 0.2);
-            max-width: 400px;
+            max-width: 450px;
             z-index: 10;
             position: relative;
         }
@@ -32,7 +32,7 @@
             margin-bottom: 20px;
             border-radius: 15px;
         }
-        h1 { color: #fb6f92; font-size: 2rem; margin-bottom: 25px; }
+        h1 { color: #fb6f92; font-size: 2rem; margin-bottom: 25px; min-height: 80px; }
         .btn-group {
             display: flex;
             justify-content: center;
@@ -49,12 +49,14 @@
             cursor: pointer;
             transition: transform 0.1s;
         }
-        #yesBtn { background-color: #ff8fab; color: white; position: relative; z-index: 100; }
+        #yesBtn { background-color: #ff8fab; color: white; position: relative; z-index: 1000; }
         #noBtn {
             background-color: #fb6f92;
             color: white;
             position: fixed;
             transition: 0.2s ease;
+            white-space: nowrap;
+            z-index: 999;
         }
         .confetti {
             position: fixed;
@@ -63,8 +65,37 @@
             animation: fall 3s linear forwards;
             z-index: 1;
         }
+
+        /* KBC Transition Styles */
+        .kbc-text {
+            color: #ffeb3b; 
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px #000;
+            margin-top: 20px;
+            animation: pulse 0.4s infinite alternate;
+        }
+
+        @keyframes pulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.08); }
+        }
+
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 1.5s forwards;
+            color: #6d6d6d;
+            font-weight: bold;
+            font-size: 0.8rem;
+            margin-top: 15px;
+        }
+
         @keyframes fall {
             to { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
@@ -72,23 +103,46 @@
 
     <div class="container" id="mainContainer">
         <img id="displayImg" src="https://images.unsplash.com/photo-1518562180175-34a163b1a9a6?auto=format&fit=crop&q=80&w=400" alt="Hearts">
-        <h1 id="question">Hello Idiot❤️.. Will you please be my Valentine🫣?</h1>
+        <h1 id="question"></h1>
 
         <div class="btn-group">
-            <button id="yesBtn" onclick="celebrate()">Yes!</button>
+            <button id="yesBtn" onclick="showKBC()">Yes!</button>
             <button id="noBtn" onmouseover="moveButton()" onclick="moveButton()">No</button>
         </div>
     </div>
 
     <script>
         let yesScale = 1;
+        const mainMessage = "Hello Idiot❤️.. Will you please be my Valentine🫣?";
+        let charIndex = 0;
 
-        // Set initial position for the No button
+        const noPhrases = [
+            "No", "Are you sure?", "Really?", "Think again!", 
+            "Last chance!", "Surely not?", "Wrong button!", "Not today!"
+        ];
+
         window.onload = () => {
+            typeWriter("question", mainMessage, 80);
             const noBtn = document.getElementById('noBtn');
             noBtn.style.left = 'calc(50% + 60px)';
             noBtn.style.top = 'calc(50% + 85px)';
         };
+
+        function typeWriter(elementId, text, speed, callback) {
+            let i = 0;
+            const element = document.getElementById(elementId);
+            element.innerHTML = ""; 
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                } else if (callback) {
+                    callback();
+                }
+            }
+            type();
+        }
 
         function moveButton() {
             const noBtn = document.getElementById('noBtn');
@@ -97,28 +151,47 @@
 
             const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - padding);
             const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - padding);
-
             noBtn.style.left = x + 'px';
             noBtn.style.top = y + 'px';
+
+            const randomPhrase = noPhrases[Math.floor(Math.random() * noPhrases.length)];
+            noBtn.innerText = randomPhrase;
 
             yesScale += 0.2;
             yesBtn.style.transform = `scale(${yesScale})`;
         }
 
+        // --- TRANSITION PAGE ---
+        function showKBC() {
+            const container = document.getElementById('mainContainer');
+            document.body.style.backgroundColor = "#0d1b44"; 
+            
+            container.innerHTML = `
+                <img src="amitabh.jpg" alt="Well Played" style="width:200px; border: 4px solid #ffeb3b;">
+                <h1 class="kbc-text">JI BILKUL SAHI UTTAR AAPKA WELL PLAYED!!</h1>
+            `;
+
+            setTimeout(celebrate, 3500);
+        }
+
+        // --- FINAL PAGE ---
         function celebrate() {
             document.body.style.backgroundColor = "#ffb7c5";
             const container = document.getElementById('mainContainer');
-            const noBtn = document.getElementById('noBtn');
-
-            if (noBtn) noBtn.style.display = 'none';
-
+            
             container.innerHTML = `
                 <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Heart%20with%20Arrow.png" alt="Love" style="width:200px;">
-                <h1 style="color: #fb6f92; font-size: 2rem; margin-bottom: 15px;">Yayayyayy🥳🥳 You're now officially booked for V-day 2026🥰</h1>
-                <p style="color: #ff4d6d; font-weight: bold; font-size: 0.8rem; margin-bottom: 10px;">
-                    (P.S. I know my frontend skills aren't exactly 'production-grade' as compared to yours, but I hope the logic and intent holds up🤗)<br> 
-                </p>
+                <h1 id="successMessage" style="color: #fb6f92; font-size: 1.8rem; margin-bottom: 15px;"></h1>
+                <div id="subText" class="fade-in" style="display:none;">
+                    (P.S. I know my frontend skills aren't exactly 'production-grade' unlike yours, but I hope the logic and intent holds up🤗)
+                </div>
             `;
+
+            const successText = "Yayayyayy🥳🥳 You're now officially booked for V-day 2026🥰";
+            typeWriter("successMessage", successText, 50, () => {
+                const subText = document.getElementById('subText');
+                subText.style.display = 'block';
+            });
 
             for(let i=0; i<35; i++) {
                 setTimeout(createHeart, i * 100);
