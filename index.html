@@ -58,15 +58,25 @@
             white-space: nowrap;
             z-index: 999;
         }
-        .confetti {
-            position: fixed;
-            font-size: 2rem;
-            top: -50px;
-            animation: fall 3s linear forwards;
-            z-index: 1;
+
+        /* --- New Animations for KBC Page --- */
+        .kbc-img {
+            width: 220px;
+            border: 5px solid #ffeb3b;
+            box-shadow: 0 0 20px #ffeb3b;
+            animation: heroEntrance 0.8s ease-out, borderGlow 1.5s infinite alternate;
         }
 
-        /* KBC Transition Styles */
+        @keyframes heroEntrance {
+            from { transform: scale(0.2) rotate(-10deg); opacity: 0; }
+            to { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+
+        @keyframes borderGlow {
+            from { box-shadow: 0 0 10px #ffeb3b; }
+            to { box-shadow: 0 0 30px #fbc02d, 0 0 10px #ffffff; }
+        }
+
         .kbc-text {
             color: #ffeb3b; 
             font-size: 1.8rem;
@@ -81,6 +91,14 @@
             to { transform: scale(1.08); }
         }
 
+        /* --- Final Page Animations --- */
+        .confetti {
+            position: fixed;
+            font-size: 2rem;
+            top: -50px;
+            animation: fall 3s linear forwards;
+            z-index: 1;
+        }
         .fade-in {
             opacity: 0;
             animation: fadeIn 1.5s forwards;
@@ -89,7 +107,6 @@
             font-size: 0.8rem;
             margin-top: 15px;
         }
-
         @keyframes fall {
             to { transform: translateY(110vh) rotate(360deg); opacity: 0; }
         }
@@ -167,7 +184,7 @@
             document.body.style.backgroundColor = "#0d1b44"; 
             
             container.innerHTML = `
-                <img src="amitabh.jpg" alt="Well Played" style="width:200px; border: 4px solid #ffeb3b;">
+                <img src="amitabh.jpg" class="kbc-img" alt="Well Played">
                 <h1 class="kbc-text">JI BILKUL SAHI UTTAR AAPKA WELL PLAYED!!</h1>
             `;
 
